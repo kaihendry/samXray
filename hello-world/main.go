@@ -23,8 +23,8 @@ var (
 	ErrNon200Response = errors.New("Non 200 Response found")
 )
 
-func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
-	ctx, seg := xray.BeginSubsegment(context.Background(), "checkip.amazonaws.com")
+func handler(ctx context.Context, request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+	ctx, seg := xray.BeginSubsegment(ctx, "checkip.amazonaws.com")
 	resp, err := ctxhttp.Get(ctx, xray.Client(nil), DefaultHTTPGetAddress)
 	seg.Close(nil)
 
